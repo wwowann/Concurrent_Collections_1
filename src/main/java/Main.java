@@ -18,27 +18,25 @@ public class Main {
                 }
             }
         });
-        Thread operator1 = new Thread(null, () -> metod(phoneNumers));
-        Thread operator2 = new Thread(null, () -> metod(phoneNumers));
-        Thread operator3 = new Thread(null, () -> metod(phoneNumers));
+        Thread operator1 = new Thread(null, () -> metod(phoneNumers, thread));
+        Thread operator2 = new Thread(null, () -> metod(phoneNumers, thread));
+        Thread operator3 = new Thread(null, () -> metod(phoneNumers, thread));
         thread.start();
         operator1.start();
         operator2.start();
         operator3.start();
         thread.join();
-
     }
 
-    public static void metod(Queue<String> phoneNumers) {
+    public static void metod(Queue<String> phoneNumers, Thread thread) {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        while (phoneNumers.peek() != null) {
+        while (thread.isAlive() || phoneNumers.size()>0){
             System.out.println("Оператор " + Thread.currentThread().getName() +
-                    " обрабатывает звонок по номеру " + phoneNumers.peek());
-            phoneNumers.poll();
+                    " обрабатывает звонок по номеру " + phoneNumers.poll());
             Random random = new Random();
             try {
                 Thread.sleep(random.nextInt(5) * 1000);
@@ -47,6 +45,5 @@ public class Main {
             }
         }
         System.out.println(Thread.currentThread().getName() + " Звонков в очереди нет");
-
     }
 }
