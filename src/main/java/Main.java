@@ -1,8 +1,6 @@
-import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
@@ -46,7 +44,6 @@ public class Main {
         lock.lock();
         try {
             while (thread.isAlive() || !phoneNumers.isEmpty()) {
-
                 System.out.println("Оператор " + Thread.currentThread().getName() +
                         " обрабатывает звонок по номеру " + phoneNumers.poll());
                 Random random = new Random();
