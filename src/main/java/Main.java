@@ -1,7 +1,6 @@
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
 
@@ -36,16 +35,9 @@ public class Main {
 
     public static void metod(BlockingQueue<String> phoneNumers, Thread thread) {
         try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        ReentrantLock lock = new ReentrantLock();
-        lock.lock();
-        try {
             while (thread.isAlive() || !phoneNumers.isEmpty()) {
                 System.out.println("Оператор " + Thread.currentThread().getName() +
-                        " обрабатывает звонок по номеру " + phoneNumers.poll());
+                        " обрабатывает звонок по номеру " + phoneNumers.take());
                 Random random = new Random();
                 try {
                     Thread.sleep(random.nextInt(5) * 1000);
@@ -53,9 +45,9 @@ public class Main {
                     e.printStackTrace();
                 }
             }
-        } finally {
-            lock.unlock();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        System.out.println(Thread.currentThread().getName() + " Звонков в очереди нет");
+        System.out.println(" Оператор " + Thread.currentThread().getName() + " закончил свою работу");
     }
 }
